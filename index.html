@@ -1,0 +1,97 @@
+<html>
+<head>
+<script
+  src="https://code.jquery.com/jquery-3.2.1.js"
+  integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+  crossorigin="anonymous"></script>
+</head>
+<body>
+
+  <div id="state"></div>
+  <div id="question"> </div>
+  <button id="next" style="display: none"> Next </button>
+  <div id="inter" style="display: none"> 
+  	Ai raspuns corect? 
+  	<button id="yes"> Da </button>
+  	<button id="no"> Nu </button>
+  </div>
+
+  <script src="data_utf.json"></script>
+  <script type="text/javascript">
+  	function toggleHide(what) {
+	    var x = document.getElementById(what);
+	    if (x.style.display === "none") {
+	        x.style.display = "block";
+	    } else {
+	        x.style.display = "none";
+	    }
+  	}
+
+	function validate() {
+		toggleHide("inter");
+		toggleHide("next");
+
+		var current = data[question];
+		$("#answer").text(current.answer);
+
+		question += 1;
+		raspunse += 1;
+	}
+
+	function nextQuestion() {
+		toggleHide("inter");
+		toggleHide("next");
+		$("#answer").text("");
+		$("#counter").text("Correcte " + correct + "/" + (raspunse - 1));
+
+		var current = data[question];
+		
+		$("#question").text(current.question);
+		$("#state").text("Raspunde la intrebarea " + question + " index " + current.idx);
+	}
+
+	var question = 0;
+	var raspunse = 0;
+	var correct = 0;
+
+	$(document).ready(function() {
+		$("#next").click(function() {
+			validate();
+		});
+
+		$("#yes").click(function() {
+			correct +=1;
+			nextQuestion();
+		});
+		$("#no").click(function() {
+			nextQuestion();
+		});
+		$('#sariBut').click(function(){
+        	question = parseInt($('#sari').val());	
+        	sari();
+    	});
+    	$('#nusari').click(function(){
+        	sari();
+    	});
+    	
+	});
+
+	function sari() {
+		validate();
+		nextQuestion();
+		toggleHide("next");
+		toggleHide("myForm");
+	}
+
+
+	// validate();
+	// nextQuestion();
+  </script>
+
+  <div id="answer"> </div>
+  <div id="counter"> </div>
+
+  <div id="myForm"> Sari la intrebarea <input id="sari"> <button id="sariBut"> Sari </button> <button id="nusari"> Nu sari</button> </div>
+  
+ </body>
+</html>
